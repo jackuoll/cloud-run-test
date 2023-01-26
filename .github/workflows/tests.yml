@@ -1,0 +1,39 @@
+name: Lint and Test
+on: push
+
+jobs:
+  run-linters:
+    name: Lint
+    runs-on: ubuntu-latest
+    env:
+      BRANCH_NAME: dev
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.11
+
+      - name: Install Python dev dependencies
+        run: pip install -r requirements_dev.txt
+
+      - name: Pre-commit static checks
+        run: pre-commit run --hook-stage manual -a
+
+      - name: Run isort
+        run: isort --check-only --profile black .
+
+      - name: Run linters
+        uses: wearerequired/lint-action@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          # Enable linters
+          black: true
+          flake8: true
+          mypy: true
+
+      - name: Check django Migrations
+        run: python manage.py makemigrations --check
