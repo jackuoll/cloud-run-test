@@ -1,0 +1,52 @@
+steps:
+
+- name: 'python:3.8-slim'
+  id: Test
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      pip install -r requirements.txt --upgrade --upgrade-strategy eager
+# Pull existing image for use as cache for the build step
+- name: 'gcr.io/cloud-builders/docker'
+  id: Cache
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+     docker pull gcr.io/$PROJECT_ID/wwnz-digital-twins-generator:$BRANCH_NAME || exit 0
+- name: 'gcr.io/cloud-builders/docker'
+  id: Build
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/wwnz-digital-twins-generator:$BRANCH_NAME', '--cache-from', 'gcr.io/$PROJECT_ID/wwnz-digital-twins-generator:$BRANCH_NAME', '.']
+  waitFor: ['Cache', 'Test']
+
+# Push new image to repository
+- name: 'gcr.io/cloud-builders/docker'
+  id: Pushed
+  args: ['push', 'gcr.io/$PROJECT_ID/wwnz-digital-twins-generator:$BRANCH_NAME']
+  waitFor: ['Build']
+
+# release cloud run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: [
+    'run',
+    'deploy',
+    'wwnz-digital-twins-generator-$BRANCH_NAME',
+    '--image', 'gcr.io/$PROJECT_ID/wwnz-digital-twins-generator:$BRANCH_NAME',
+    '--region', 'us-central1',
+    '--platform', 'managed',
+    '--service-account', 'p-lab-audience@gcp-wow-food-de-pel-prod.iam.gserviceaccount.com',
+    '--memory', '4Gi',
+    '--max-instances', '5',
+    '--ingress', 'all',
+    '--set-env-vars', 'BRANCH_NAME=$BRANCH_NAME'
+  ]
+
+options:
+  volumes:
+    - name: 'shared'
+      path: '/shared'
+
+images:
+- 'gcr.io/$PROJECT_ID/wwnz-digital-twins-generator:$BRANCH_NAME'

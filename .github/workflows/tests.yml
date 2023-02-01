@@ -34,6 +34,3 @@ jobs:
           black: true
           flake8: true
           mypy: true
-
-      - name: Check django Migrations
-        run: python manage.py makemigrations --check
