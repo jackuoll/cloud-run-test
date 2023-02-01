@@ -5,4 +5,5 @@ google-cloud-logging
 google-cloud-error-reporting
 pydantic
 pydantic[dotenv]
+starlette-context
 uvicorn
