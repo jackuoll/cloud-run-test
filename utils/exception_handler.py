@@ -11,6 +11,8 @@ async def fastapi_exception_logging_handler(
     request: Request, exc: Exception
 ) -> JSONResponse:
     logging.exception("Error occurred")
+    if gcloud_logging.handler is None:
+        raise
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         content={
