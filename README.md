@@ -2,15 +2,10 @@
 
 Cloud Run service to generate digital twins
 
-# Service account requirements
+## Local setup
 
-* Must be able to access BQ with table creation/write access
-*
+Nothing special to the setup, just create your virtualenv, install requirements and run `uvicorn web:app --reload` to run your development environment.
 
+## Debugging dev
 
-## Local docker build
-
-```bash
-docker build digital-twins-generator:local . --build-arg BRANCH_NAME=local PROJECT_ID=my-project-id
-docker run digital-twins-generator:local
-```
+You can follow the guide here to [proxy cloud run](https://cloud.google.com/run/docs/authenticating/developers#gcloud), then you will be able to make requests as if cloud run were running on http://127.0.0.1:8080
