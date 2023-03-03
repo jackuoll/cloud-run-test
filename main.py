@@ -1,4 +1,5 @@
 import logging
+import time
 
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
@@ -16,4 +17,5 @@ def root() -> JSONResponse:
     two_hours_in_seconds = 60 * 60 * 2
     for i in range(two_hours_in_seconds):
         logging.info(f"It has been {i}")
+        time.sleep(1)
     return JSONResponse(content={"content": "hello world"})
