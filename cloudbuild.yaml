@@ -35,6 +35,7 @@ steps:
   ]
 
 options:
+  logging: CLOUD_LOGGING_ONLY
   volumes:
     - name: 'shared'
       path: '/shared'
