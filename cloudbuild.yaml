@@ -31,7 +31,7 @@ steps:
     '--memory', '1Gi',
     '--max-instances', '1',
     '--ingress', 'all',
-    '--set-env-vars', 'BRANCH_NAME=$BRANCH_NAME'
+    '--set-env-vars', 'BRANCH_NAME=$BRANCH_NAME',
     "--allow-unauthenticated"
   ]
 
