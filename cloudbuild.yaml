@@ -26,6 +26,7 @@ steps:
     'deploy',
     'cloud-run-test-$BRANCH_NAME',
     '--image', 'gcr.io/$PROJECT_ID/cloud-run-test:$BRANCH_NAME',
+    '--region', 'us-central1',
     '--platform', 'managed',
     '--memory', '1Gi',
     '--max-instances', '1',
