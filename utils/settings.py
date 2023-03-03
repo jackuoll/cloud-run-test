@@ -42,9 +42,7 @@ class Settings(BaseSettings):
 
     @property
     def project(self) -> str:
-        if self.environment != Environment.local:
-            return "gcp-wow-food-de-pel-prod"
-        return "gcp-wow-pel-onetoone-dev"
+        return "jw-terraform-testing"
 
 
 SETTINGS = Settings()

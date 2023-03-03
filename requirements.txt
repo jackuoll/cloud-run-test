@@ -1,9 +1,6 @@
 colorlog
 fastapi!=0.89.0
-google-cloud-bigquery
 google-cloud-logging
 google-cloud-error-reporting
-pydantic
-pydantic[dotenv]
 starlette-context
 uvicorn
