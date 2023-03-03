@@ -19,3 +19,11 @@ def root() -> JSONResponse:
         logging.info(f"It has been {i}")
         time.sleep(1)
     return JSONResponse(content={"content": "hello world"})
+
+
+@app.get("/die")
+def memkiller() -> JSONResponse:
+    blah = ["we're all going to die, aren't we?"]
+    while True:
+        blah.extend(blah)
+    return JSONResponse(content={"stop": "i'm already dead"})
